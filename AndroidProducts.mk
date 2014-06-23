@@ -1,2 +1,2 @@
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/full_a700.mk
+    $(LOCAL_DIR)/device_mx532.mk
