@@ -31,7 +31,7 @@ BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 6291456
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 536870912
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 28940697600
-BOARD_FLASH_BLOCK_SIZE := 1024
+BOARD_FLASH_BLOCK_SIZE := 2048
 
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
@@ -49,9 +49,12 @@ WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcm4329_apsta.bin"
 TARGET_RECOVERY_FSTAB := device/fujitsu/mx532/prebuilt/ramdisk/recovery.fstab
 RECOVERY_FSTAB_VERSION := 2
 #BOARD_TOUCH_RECOVERY := true
-
-TARGET_PREBUILT_KERNEL := device/fujitsu/mx532/kernel
 TARGET_RECOVERY_INITRC := device/fujitsu/mx532/prebuilt/ramdisk/init.recovery.chagall.rc
+
+# Kernel
+TARGET_KERNEL_SOURCE := kernel/fujitsu/mx532
+#TARGET_PREBUILT_KERNEL := device/fujitsu/mx532/kernel
+TARGET_KERNEL_CONFIG := tegra3_chagall_eng_android_kitkat_defconfig
 
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_HAS_LARGE_FILESYSTEM := true
