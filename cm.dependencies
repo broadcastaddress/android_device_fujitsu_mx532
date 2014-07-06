@@ -1,0 +1,6 @@
+[
+  {
+    "repository": "android_kernel_fujitsu_mx532",
+    "target_path": "kernel/fujitsu/mx532"
+  }
+]
