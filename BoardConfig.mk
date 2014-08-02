@@ -3,12 +3,11 @@
 # inherit from the proprietary version
 -include vendor/fujitsu/mx532/BoardConfigVendor.mk
 
-TARGET_BOARD_PLATFORM := tegra
 #TARGET_TEGRA_VERSION := t30
 
 TARGET_ARCH := arm
 TARGET_NO_BOOTLOADER := true
-TARGET_BOARD_PLATFORM := unknown
+TARGET_BOARD_PLATFORM := tegra
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_SMP := true
@@ -21,6 +20,9 @@ ARCH_ARM_USE_NON_NEON_MEMCPY := true
 TARGET_BOOTLOADER_BOARD_NAME := chagall
 
 TARGET_USERIMAGES_USE_EXT4 := true
+
+# Use CM PowerHAL by default
+TARGET_POWERHAL_VARIANT := cm
 
 BOARD_KERNEL_CMDLINE := 
 BOARD_KERNEL_BASE := 0x10000000
