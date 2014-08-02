@@ -8,7 +8,12 @@ $(call inherit-product-if-exists, vendor/fujitsu/mx532/mx532-vendor.mk)
 PRODUCT_AAPT_CONFIG := normal mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
 
+WIFI_BAND := 802_11_BG
+
 DEVICE_PACKAGE_OVERLAYS += device/fujitsu/mx532/overlay
+
+# we have enough storage space to hold precise GC data
+PRODUCT_TAGS += dalvik.gc.type-precise
 
 LOCAL_PATH := device/fujitsu/mx532
 ifeq ($(TARGET_PREBUILT_KERNEL),)
@@ -23,7 +28,7 @@ PRODUCT_COPY_FILES += \
     
 # fstab files
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/ramdisk/vold.fstab:root/etc/vold.fstab \
+    $(LOCAL_PATH)/prebuilt/ramdisk/vold.fstab:system/etc/vold.fstab \
     $(LOCAL_PATH)/prebuilt/ramdisk/vold.fstab:recovery/root/etc/vold.fstab \
     $(LOCAL_PATH)/prebuilt/ramdisk/init.chagall.rc:root/init.chagall.rc \
     $(LOCAL_PATH)/prebuilt/ramdisk/init.chagall.usb.rc:root/init.chagall.usb.rc \
@@ -31,9 +36,17 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/ramdisk/ueventd.chagall.rc:recovery/root/ueventd.chagall.rc \
     $(LOCAL_PATH)/prebuilt/ramdisk/fstab.chagall:root/fstab.chagall
 
+# PPP libhuaweigeneric-ril
+#PRODUCT_COPY_FILES += \
+#		$(LOCAL_PATH)/ppp/ip-up:root/system/etc/ip-up \
+#		$(LOCAL_PATH)/ppp/ip-down:root/system/etc/ip-down \
+
 
 #PRODUCT_COPY_FILES += \
 #		$(LOCAL_PATH)/prebuilt/ramdisk/init.recovery.chagall.rc:recovery/root/init.recovery.chagall.rc
+
+PRODUCT_COPY_FILES += \
+    device/fujitsu/mx532/prebuilt/usr/idc/atmel-maxtouch.idc:system/usr/idc/atmel-maxtouch.idc
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml \
@@ -52,12 +65,29 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES := \
 		brcm_patchram_plus \
-		setup_fs
+		setup_fs \
+		mxt-app \
+		libnetcmdiface \
+		libdashplayer \
+		librs_jni \
+    make_ext4fs \
+    audio.primary.tegra \
+    libaudioutils \
+    audio.a2dp.default \
+    audio.usb.default \
+    l2ping \
+    hcitool \
+    bttest \
+    com.android.future.usb.accessory
 
 # Additional Build properties
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.zygote.disable_gl_preload=true
 	
+# media config xml file
+PRODUCT_COPY_FILES += \
+    device/fujitsu/mx532/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
+    device/fujitsu/mx532/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml
 	
 # Other properties see system.prop file
 
