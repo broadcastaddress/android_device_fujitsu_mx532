@@ -25,6 +25,8 @@ on init
     mkdir /storage/usb0 0000 root root
     mkdir /mnt/media_rw/usb0 0700 media_rw media_rw
     symlink /storage/usb0 /mnt/usb_storage
+    
+    mkdir /custom 0774 root root
 
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
@@ -110,7 +112,7 @@ on boot
     # Default to "very high" sensitivity
     #write /sys/Touch/sensitivity_raw 50
     # Touchscreen Config-UI interface
-    chown system system /proc/goodix-update
+    #chown system system /proc/goodix-update
 
 # charge/charged LEDs
     chown system system /sys/class/leds/amber/brightness
@@ -229,10 +231,10 @@ on boot
     
 on property:ro.debuggable=1
     # Touchscreen Config-UI interface
-    chmod 666 /sys/devices/platform/tegra-i2c.1/i2c-1/1-005a/mem_access
-#   chmod 666 /sys/devices/platform/tegra-i2c.1/i2c-1/1-005a/debug_enable
-#   chmod 666 /sys/devices/platform/tegra-i2c.1/i2c-1/1-005a/pause_driver
-#   chmod 666 /sys/devices/platform/tegra-i2c.1/i2c-1/1-005a/slowscan_enable
+    chmod 666 /sys/devices/platform/tegra-i2c.1/i2c-1/1-004d/mem_access
+#   chmod 666 /sys/devices/platform/tegra-i2c.1/i2c-1/1-004d/debug_enable
+#   chmod 666 /sys/devices/platform/tegra-i2c.1/i2c-1/1-004d/pause_driver
+#   chmod 666 /sys/devices/platform/tegra-i2c.1/i2c-1/1-004d/slowscan_enable
 
 service p2p_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
@@ -396,22 +398,6 @@ service nvcpud /system/bin/nvcpud
     user root
     group root
     
-# test mode for RIL: Should probably be removed from production phones
-service ril-daemon-test /system/bin/rild
-    socket rild-testmode stream 666 root radio
-    socket rild-debug stream 660 radio system
-    user root
-    group radio cache inet misc audio sdcard_rw sdcard_r
-    disabled
-    
-on property:ril.testmode=1
-    stop ril-daemon
-    start ril-daemon-test
-
-on property:ril.testmode=0
-    stop ril-daemon-test
-    start ril-daemon
-
 # Stop RIL daemon for WiFi SKU
 on property:ro.carrier=wifi-only
     stop ril-daemon
