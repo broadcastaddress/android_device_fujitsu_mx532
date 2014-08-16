@@ -28,8 +28,6 @@ PRODUCT_COPY_FILES += \
     
 # fstab files
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/ramdisk/vold.fstab:system/etc/vold.fstab \
-    $(LOCAL_PATH)/prebuilt/ramdisk/vold.fstab:recovery/root/etc/vold.fstab \
     $(LOCAL_PATH)/prebuilt/ramdisk/init.chagall.rc:root/init.chagall.rc \
     $(LOCAL_PATH)/prebuilt/ramdisk/init.chagall.usb.rc:root/init.chagall.usb.rc \
     $(LOCAL_PATH)/prebuilt/ramdisk/ueventd.chagall.rc:root/ueventd.chagall.rc \

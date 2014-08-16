@@ -5,10 +5,21 @@ on early-init
 
 on init
     # See storage config details at http://source.android.com/tech/storage/
+    chmod 0701 /mnt/media_rw
     mkdir /mnt/shell/emulated 0700 shell shell
+    
+    # Make storage mount points
     mkdir /storage/emulated 0555 root root
-
+	  mkdir /storage/sdcard1 0775 system system
+    mkdir /storage/usbdisk0 0775 system system
+    mkdir /storage/usbdisk1 0775 system system
+    
+    mkdir /mnt/media_rw/sdcard1 0775 system system
+    mkdir /mnt/media_rw/usbdisk0 0775 system system
+    mkdir /mnt/media_rw/usbdisk1 0775 system system
+    
     export EXTERNAL_STORAGE /storage/emulated/legacy
+    export SECONDARY_STORAGE /storage/sdcard1:/storage/usbdisk0:/storage/usbdisk1
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
     export EMULATED_STORAGE_TARGET /storage/emulated
 
@@ -17,21 +28,23 @@ on init
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-
-    export SECONDARY_STORAGE /storage/sdcard1:/storage/usb0
-    mkdir /storage/sdcard1 0000 root root
-    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+	  symlink /storage/sdcard1 /extSdCard
+    symlink /storage/sdcard1 /mnt/extSdCard
     symlink /storage/sdcard1 /mnt/external_sd
-    mkdir /storage/usb0 0000 root root
-    mkdir /mnt/media_rw/usb0 0700 media_rw media_rw
-    symlink /storage/usb0 /mnt/usb_storage
+    symlink /storage/usbdisk0 /usbdisk0
+    symlink /storage/usbdisk0 /mnt/usbdisk0
+    symlink /storage/usbdisk1 /usbdisk1
+    symlink /storage/usbdisk1 /mnt/usbdisk1
     
+    # Fujitsu M532 custom partition
     mkdir /custom 0774 root root
 
 on fs
+		mount_all /fstab.chagall
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
-    setprop ro.crypto.umount_sd false
-    mount_all /fstab.chagall
+    #setprop ro.crypto.umount_sd false
+    setprop ro.crypto.fuse_sdcard true
+  
     # Create NVSI filter symlink
     symlink /data/data/com.nvidia.NvCPLSvc/files/com.nvidia.nvsiutilv1.xml /system/etc/permissions/com.nvidia.nvsiutilv1.xml
 
@@ -325,7 +338,11 @@ service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1
     class late_start
     disabled
 
-service fuse_usb0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usb0 /storage/usb0
+service fuse_usbdisk0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk0 /storage/usbdisk0
+    class late_start
+    disabled
+    
+service fuse_usbdisk1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk1 /storage/usbdisk1
     class late_start
     disabled
 
